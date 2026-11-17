@@ -1,0 +1,1399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arvin High School JROTC | Bear Battalion Study Hub</title>
+
+<style>
+:root {
+    --red: #c51f3a;
+    --red-light: #ed4059;
+    --black: #101010;
+    --panel: #1d1d1d;
+    --panel-light: #292929;
+    --white: #ffffff;
+    --muted: #dedede;
+    --border: #505050;
+    --green: #23864b;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: var(--black);
+    color: var(--white);
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 18px;
+    line-height: 1.65;
+}
+
+header {
+    background: linear-gradient(135deg, #171717, #300b12);
+    border-bottom: 4px solid var(--red);
+    padding: 38px 20px;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0;
+    font-size: clamp(28px, 4vw, 42px);
+    letter-spacing: 1px;
+    line-height: 1.3;
+}
+
+header p {
+    color: #eeeeee;
+    margin: 12px 0 0;
+    font-size: 17px;
+    letter-spacing: 2px;
+}
+
+main {
+    width: min(1050px, 94%);
+    margin: 35px auto 60px;
+}
+
+.intro {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-left: 5px solid var(--red);
+    border-radius: 9px;
+    padding: 24px;
+    margin-bottom: 30px;
+    line-height: 1.8;
+    font-size: 18px;
+}
+
+.intro strong {
+    color: #ff8293;
+}
+
+.section-title {
+    margin: 35px 0 20px;
+    font-size: 27px;
+}
+
+.module-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
+}
+
+.module {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 27px;
+    transition: border-color .2s, transform .2s;
+}
+
+.module:hover {
+    border-color: var(--red-light);
+    transform: translateY(-2px);
+}
+
+.module h3 {
+    margin: 0 0 12px;
+    font-size: 23px;
+}
+
+.module p {
+    color: var(--muted);
+    line-height: 1.75;
+    font-size: 17px;
+    min-height: 65px;
+}
+
+button {
+    border: none;
+    border-radius: 7px;
+    padding: 14px 20px;
+    font-size: 17px;
+    line-height: 1.4;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background .2s, transform .15s;
+}
+
+button:active {
+    transform: scale(.98);
+}
+
+.primary {
+    background: var(--red);
+    color: white;
+}
+
+.primary:hover {
+    background: var(--red-light);
+}
+
+.secondary {
+    background: #444444;
+    color: white;
+}
+
+.secondary:hover {
+    background: #5a5a5a;
+}
+
+button:disabled {
+    opacity: .45;
+    cursor: not-allowed;
+}
+
+.quiz {
+    display: none;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: clamp(20px, 4vw, 35px);
+}
+
+.quiz-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.quiz-top h2 {
+    margin: 0;
+    font-size: 25px;
+}
+
+.counter {
+    color: #ff8293;
+    font-size: 17px;
+    font-weight: bold;
+}
+
+.progress-track {
+    height: 10px;
+    background: #444444;
+    border-radius: 20px;
+    overflow: hidden;
+    margin-bottom: 30px;
+}
+
+.progress-fill {
+    height: 100%;
+    width: 0;
+    background: var(--red-light);
+    transition: width .25s;
+}
+
+.question {
+    font-size: 24px;
+    line-height: 1.65;
+    margin: 20px 0 25px;
+    font-weight: bold;
+}
+
+.answers {
+    display: grid;
+    gap: 14px;
+}
+
+.answer {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    text-align: left;
+    width: 100%;
+    color: white;
+    background: var(--panel-light);
+    border: 1px solid #555555;
+    padding: 18px;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: normal;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+}
+
+.answer:hover:not(:disabled) {
+    border-color: var(--red-light);
+    background: #302024;
+}
+
+.answer .letter {
+    color: #ff8293;
+    font-weight: bold;
+    min-width: 25px;
+    padding-top: 2px;
+}
+
+.answer.correct {
+    border: 2px solid #35b76b;
+    background: #153b27;
+}
+
+.answer.wrong {
+    border: 2px solid #e45b5b;
+    background: #451d1d;
+}
+
+/* Special formatting for battalion staff and rank answers */
+.answer-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.staff-list {
+    display: grid;
+    gap: 10px;
+    width: 100%;
+}
+
+.staff-row {
+    display: grid;
+    grid-template-columns: minmax(150px, 1fr) minmax(120px, .8fr);
+    align-items: center;
+    gap: 15px;
+    padding: 8px 10px;
+    background: rgba(255,255,255,.045);
+    border-radius: 5px;
+    border-bottom: 1px solid #484848;
+}
+
+.staff-role {
+    font-weight: bold;
+    color: #ffffff;
+}
+
+.staff-name {
+    color: #ffd0d7;
+    text-align: left;
+}
+
+.rank-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 9px 14px;
+    width: 100%;
+}
+
+.rank-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 42px;
+    padding: 7px 11px;
+    background: rgba(255,255,255,.045);
+    border: 1px solid #454545;
+    border-radius: 5px;
+}
+
+.rank-number {
+    color: #ff8293;
+    font-weight: bold;
+    min-width: 25px;
+}
+
+.feedback {
+    display: none;
+    padding: 18px;
+    border-radius: 8px;
+    margin-top: 22px;
+    font-size: 18px;
+    line-height: 1.7;
+}
+
+.feedback.good {
+    display: block;
+    background: #153b27;
+    border: 1px solid #35b76b;
+}
+
+.feedback.bad {
+    display: block;
+    background: #451d1d;
+    border: 1px solid #e45b5b;
+}
+
+.feedback-answer {
+    margin-top: 12px;
+    font-weight: bold;
+}
+
+.feedback .staff-list,
+.feedback .rank-list {
+    margin-top: 12px;
+}
+
+.quiz-controls {
+    display: flex;
+    justify-content: space-between;
+    gap: 14px;
+    margin-top: 28px;
+}
+
+.quiz-controls button {
+    min-width: 125px;
+}
+
+.result {
+    display: none;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 35px 22px;
+    text-align: center;
+}
+
+.result h2 {
+    font-size: 30px;
+    margin-top: 0;
+}
+
+.score {
+    font-size: 56px;
+    color: #ff8293;
+    font-weight: bold;
+    margin: 18px 0;
+}
+
+.result p {
+    color: var(--muted);
+    font-size: 18px;
+    line-height: 1.7;
+}
+
+.result-actions {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-top: 25px;
+}
+
+.oral-box {
+    background: #252525;
+    border: 1px solid #555555;
+    border-radius: 8px;
+    padding: 24px;
+    margin-bottom: 20px;
+    font-size: 19px;
+    line-height: 1.9;
+    white-space: pre-line;
+}
+
+.oral-box h3 {
+    color: #ff8293;
+    margin-top: 0;
+    font-size: 23px;
+}
+
+.oral-confirm {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    margin-top: 18px;
+    padding: 17px;
+    background: #303030;
+    border-radius: 8px;
+    font-size: 18px;
+}
+
+.oral-confirm input {
+    width: 22px;
+    height: 22px;
+    accent-color: var(--red);
+}
+
+footer {
+    text-align: center;
+    color: #bbbbbb;
+    padding: 22px;
+    border-top: 1px solid #393939;
+    font-size: 15px;
+}
+
+@media (max-width: 650px) {
+    body {
+        font-size: 17px;
+    }
+
+    header {
+        padding: 30px 15px;
+    }
+
+    .question {
+        font-size: 21px;
+    }
+
+    .answer {
+        font-size: 17px;
+        padding: 15px;
+    }
+
+    .staff-row {
+        grid-template-columns: 1fr;
+        gap: 2px;
+    }
+
+    .staff-name {
+        padding-left: 8px;
+    }
+
+    .rank-list {
+        grid-template-columns: 1fr;
+    }
+
+    .quiz-controls button {
+        flex: 1;
+    }
+
+    .oral-box {
+        font-size: 17px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>ARVIN HIGH SCHOOL JROTC</h1>
+    <p>BEAR BATTALION STUDY HUB</p>
+</header>
+
+<main>
+
+    <section class="intro">
+        <strong>IMPORTANT:</strong> These are oral-test study questions.
+        Cadets are expected to memorize the answers and be prepared to
+        answer them without looking at their notes. Use these quizzes
+        to check your knowledge and prepare for inspection.
+    </section>
+
+    <section id="home">
+        <h2 class="section-title">Choose Your Study Section</h2>
+
+        <div class="module-grid">
+            <div class="module">
+                <h3>Cadet of the Month</h3>
+                <p>Review the 10 original Cadet of the Month questions,
+                including the battalion staff, ranks, and Cadet Creed.</p>
+                <button class="primary" onclick="startQuiz('cadet')">
+                    Start Quiz
+                </button>
+            </div>
+
+            <div class="module">
+                <h3>Uniform Inspection</h3>
+                <p>Review all 26 Uniform Inspection questions and answers.</p>
+                <button class="primary" onclick="startQuiz('uniform')">
+                    Start Quiz
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <section id="quiz" class="quiz">
+        <div class="quiz-top">
+            <h2 id="quizTitle">Quiz</h2>
+            <span class="counter" id="counter">Question 1 of 10</span>
+        </div>
+
+        <div class="progress-track">
+            <div class="progress-fill" id="progress"></div>
+        </div>
+
+        <div id="questionArea">
+            <div class="question" id="questionText"></div>
+            <div class="answers" id="answerChoices"></div>
+            <div class="feedback" id="feedback"></div>
+        </div>
+
+        <div class="quiz-controls">
+            <button class="secondary" onclick="goHome()">Exit Quiz</button>
+            <button class="primary" id="nextButton" onclick="nextQuestion()" disabled>
+                Next
+            </button>
+        </div>
+    </section>
+
+    <section id="result" class="result">
+        <h2>Quiz Complete</h2>
+        <div class="score" id="finalScore">0%</div>
+        <h3 id="scoreDetails"></h3>
+        <p id="resultMessage"></p>
+
+        <div class="result-actions">
+            <button class="primary" onclick="restartQuiz()">Try Again</button>
+            <button class="secondary" onclick="goHome()">Back to Sections</button>
+        </div>
+    </section>
+
+</main>
+
+<footer>
+    ARVIN HIGH SCHOOL JROTC · BEAR BATTALION
+</footer>
+
+<script>
+const cadetQuestions = [
+
+{
+    q: "Who is responsible for keeping track of all US government property (except ordinance) for the battalion?",
+    a: "The Battalion Logistics or Supply Officer, also known as the S-4.",
+    options: [
+        "The Battalion Logistics or Supply Officer, also known as the S-4.",
+        "The Battalion Operations or Training Officer, also known as the S-3.",
+        "The Battalion Adjutant or Personnel Officer, also known as the S-1.",
+        "The Battalion Security or Intelligence Officer, also known as the S-2."
+    ]
+},
+
+{
+    q: "What is the purpose of wearing white t-shirts beneath the Class A and B uniform shirts?",
+    a: "To protect the clothing from damaging perspiration.",
+    options: [
+        "To protect the clothing from damaging perspiration.",
+        "To keep the uniform properly fitted throughout the day.",
+        "To provide an additional layer during colder weather.",
+        "To prevent the uniform from becoming wrinkled during wear."
+    ]
+},
+
+{
+    q: "What awards are worn on the left shirt pocket or left shirt pocket area of the uniform?",
+    a: "Individual awards for academic, athletic, and military excellence.",
+    options: [
+        "Individual awards for academic, athletic, and military excellence.",
+        "Unit awards for academic, athletic, and military participation.",
+        "Leadership awards for attendance, service, and team involvement.",
+        "Achievement awards for citizenship, conduct, and school activities."
+    ]
+},
+
+{
+    type: "staff",
+    q: "Who is your battalion staff?",
+    a: `Battalion Commander (BC): LTC Moreno
+Executive Officer (XO): MAJ Hernandez
+Command Sergeant Major (CSM): CSM Reyes
+Operations Sergeant Major (OPS): SGM Cruz
+S-1 (Adjutant): CPT Ramirez
+S-2 (Security): CPT Tamayo
+S-3 (Training): MAJ Celis
+S-4 (Logistics): CPT Blas
+S-5 (Public Affairs): CPT Lara
+S-6 (Signal): CPT Patino & CPT Almaraz
+S-7 (Future Technology): CPT Hernandez
+S-8 (Physical Fitness): CPT Bautista`,
+    options: [
+        `Battalion Commander (BC): LTC Moreno
+Executive Officer (XO): MAJ Hernandez
+Command Sergeant Major (CSM): CSM Reyes
+Operations Sergeant Major (OPS): SGM Cruz
+S-1 (Adjutant): CPT Ramirez
+S-2 (Security): CPT Tamayo
+S-3 (Training): MAJ Celis
+S-4 (Logistics): CPT Blas
+S-5 (Public Affairs): CPT Lara
+S-6 (Signal): CPT Patino & CPT Almaraz
+S-7 (Future Technology): CPT Hernandez
+S-8 (Physical Fitness): CPT Bautista`,
+
+        `Battalion Commander (BC): LTC Hernandez
+Executive Officer (XO): MAJ Moreno
+Command Sergeant Major (CSM): CSM Cruz
+Operations Sergeant Major (OPS): SGM Reyes
+S-1 (Adjutant): CPT Tamayo
+S-2 (Security): CPT Ramirez
+S-3 (Training): MAJ Blas
+S-4 (Logistics): CPT Celis
+S-5 (Public Affairs): CPT Patino
+S-6 (Signal): CPT Lara & CPT Almaraz
+S-7 (Future Technology): CPT Bautista
+S-8 (Physical Fitness): CPT Hernandez`,
+
+        `Battalion Commander (BC): LTC Moreno
+Executive Officer (XO): MAJ Reyes
+Command Sergeant Major (CSM): CSM Hernandez
+Operations Sergeant Major (OPS): SGM Cruz
+S-1 (Adjutant): CPT Blas
+S-2 (Security): CPT Tamayo
+S-3 (Training): MAJ Ramirez
+S-4 (Logistics): CPT Celis
+S-5 (Public Affairs): CPT Lara
+S-6 (Signal): CPT Hernandez & CPT Almaraz
+S-7 (Future Technology): CPT Patino
+S-8 (Physical Fitness): CPT Bautista`,
+
+        `Battalion Commander (BC): LTC Moreno
+Executive Officer (XO): MAJ Hernandez
+Command Sergeant Major (CSM): CSM Reyes
+Operations Sergeant Major (OPS): SGM Cruz
+S-1 (Adjutant): CPT Celis
+S-2 (Security): CPT Ramirez
+S-3 (Training): MAJ Tamayo
+S-4 (Logistics): CPT Blas
+S-5 (Public Affairs): CPT Patino
+S-6 (Signal): CPT Lara & CPT Almaraz
+S-7 (Future Technology): CPT Hernandez
+S-8 (Physical Fitness): CPT Bautista`
+    ]
+},
+
+{
+    q: "Some leaders think coercion is necessary to motivate followers. Define coercion.",
+    a: "Using force or threats to control how someone acts or thinks.",
+    options: [
+        "Using force or threats to control how someone acts or thinks.",
+        "Using rewards or praise to encourage how someone acts or thinks.",
+        "Using guidance or advice to influence how someone acts or thinks.",
+        "Using rules or standards to explain how someone acts or thinks."
+    ]
+},
+
+{
+    q: "What does SAI stand for?",
+    a: "Senior Army Instructor.",
+    options: [
+        "Senior Army Instructor.",
+        "Senior Academic Instructor.",
+        "School Army Inspector.",
+        "Student Activities Instructor."
+    ]
+},
+
+{
+    type: "ranks",
+    q: "List the ranks from E2 to O6 in the order shown on the cadet insignia chart.",
+    a: `Cadet Private
+Cadet Private First Class
+Cadet Corporal
+Cadet Sergeant
+Cadet Staff Sergeant
+Cadet Sergeant First Class
+Cadet Master Sergeant
+Cadet First Sergeant
+Cadet Sergeant Major
+Cadet Command Sergeant Major
+Cadet Second Lieutenant
+Cadet First Lieutenant
+Cadet Captain
+Cadet Major
+Cadet Lieutenant Colonel
+Cadet Colonel`,
+    options: [
+        `Cadet Private
+Cadet Private First Class
+Cadet Corporal
+Cadet Sergeant
+Cadet Staff Sergeant
+Cadet Sergeant First Class
+Cadet Master Sergeant
+Cadet First Sergeant
+Cadet Sergeant Major
+Cadet Command Sergeant Major
+Cadet Second Lieutenant
+Cadet First Lieutenant
+Cadet Captain
+Cadet Major
+Cadet Lieutenant Colonel
+Cadet Colonel`,
+
+        `Cadet Private
+Cadet Private First Class
+Cadet Corporal
+Cadet Sergeant
+Cadet Sergeant First Class
+Cadet Staff Sergeant
+Cadet First Sergeant
+Cadet Master Sergeant
+Cadet Command Sergeant Major
+Cadet Sergeant Major
+Cadet Second Lieutenant
+Cadet Captain
+Cadet First Lieutenant
+Cadet Major
+Cadet Colonel
+Cadet Lieutenant Colonel`,
+
+        `Cadet Private
+Cadet Corporal
+Cadet Private First Class
+Cadet Sergeant
+Cadet Staff Sergeant
+Cadet Sergeant First Class
+Cadet Master Sergeant
+Cadet Sergeant Major
+Cadet First Sergeant
+Cadet Command Sergeant Major
+Cadet First Lieutenant
+Cadet Second Lieutenant
+Cadet Captain
+Cadet Major
+Cadet Lieutenant Colonel
+Cadet Colonel`,
+
+        `Cadet Private
+Cadet Private First Class
+Cadet Corporal
+Cadet Sergeant
+Cadet Staff Sergeant
+Cadet Sergeant First Class
+Cadet First Sergeant
+Cadet Master Sergeant
+Cadet Sergeant Major
+Cadet Command Sergeant Major
+Cadet Second Lieutenant
+Cadet First Lieutenant
+Cadet Major
+Cadet Captain
+Cadet Lieutenant Colonel
+Cadet Colonel`
+    ]
+},
+
+{
+    q: "Who wrote the Star-Spangled Banner?",
+    a: "Francis Scott Key.",
+    options: [
+        "Francis Scott Key.",
+        "John Philip Sousa.",
+        "Thomas Jefferson.",
+        "George Washington."
+    ]
+},
+
+{
+    q: "In what year was the current 50-star U.S. flag adopted?",
+    a: "1959.",
+    options: [
+        "1959.",
+        "1958.",
+        "1960.",
+        "1961."
+    ]
+},
+
+{
+    type: "creed",
+    q: "Read the Cadet Creed aloud. When you are finished, select the confirmation below.",
+    a: "I read it."
+}
+
+];
+
+const cadetCreed = `I Am An Army Junior ROTC Cadet.
+
+I Will Always Conduct Myself to Bring Credit To my Family, Country, School, and the Corps of Cadets.
+
+I am Loyal And Patriotic.
+
+I am The Future Of The United States Of America.
+
+I Do NOT Lie, Cheat, or Steal and Will ALWAYS Be Accountable for my Actions and Deeds.
+
+I Will Always Practice Good Citizenship and Patriotism.
+
+I Will Work Hard to Improve My mind and Strengthen My Body.
+
+I Will Seek The Mantle of Leadership And Stand Prepared to Uphold the Constitution and the American Way of Life.
+
+May God Grant Me the Strength to Always Live by This Creed.`;
+
+const uniformQuestions = [
+
+{
+    q: "What is the mission of JROTC?",
+    a: "To motivate young people to be better citizens.",
+    options: [
+        "To motivate young people to be better citizens.",
+        "To prepare young people for military careers.",
+        "To train young people to become professional athletes.",
+        "To prepare young people for government employment."
+    ]
+},
+
+{
+    q: "Who is the Battalion Commander (BTC)?",
+    a: "C/LTC Jenny Moreno.",
+    options: [
+        "C/LTC Jenny Moreno.",
+        "C/MAJ Hernandez.",
+        "C/CPT Ramirez.",
+        "C/CSM Pablo Reyes."
+    ]
+},
+
+{
+    q: "Who is the Command Sergeant Major (CSM)?",
+    a: "C/CSM Pablo Reyes.",
+    options: [
+        "C/CSM Pablo Reyes.",
+        "C/SGM Cruz.",
+        "C/CSM Tamayo.",
+        "C/CSM Hernandez."
+    ]
+},
+
+{
+    q: "Who is the Governor of California?",
+    a: "Gavin Newsom.",
+    options: [
+        "Gavin Newsom.",
+        "Gavin McInnes.",
+        "Jerry Brown.",
+        "Arnold Schwarzenegger."
+    ]
+},
+
+{
+    q: "What does the color red on the U.S. flag represent?",
+    a: "Hardiness and valor.",
+    options: [
+        "Hardiness and valor.",
+        "Purity and innocence.",
+        "Vigilance and justice.",
+        "Liberty and independence."
+    ]
+},
+
+{
+    q: "What does the color white on the U.S. flag represent?",
+    a: "Purity and innocence.",
+    options: [
+        "Purity and innocence.",
+        "Hardiness and valor.",
+        "Vigilance and perseverance.",
+        "Strength and determination."
+    ]
+},
+
+{
+    q: "What does the color blue on the U.S. flag represent?",
+    a: "Vigilance, perseverance, and justice.",
+    options: [
+        "Vigilance, perseverance, and justice.",
+        "Hardiness, courage, and valor.",
+        "Purity, innocence, and freedom.",
+        "Liberty, strength, and independence."
+    ]
+},
+
+{
+    q: "How many states are in the United States?",
+    a: "50.",
+    options: [
+        "50.",
+        "48.",
+        "52.",
+        "51."
+    ]
+},
+
+{
+    q: "How many military branches are there?",
+    a: "6.",
+    options: [
+        "6.",
+        "5.",
+        "7.",
+        "8."
+    ]
+},
+
+{
+    q: "Who is the SAI?",
+    a: "Major Carillo.",
+    options: [
+        "Major Carillo.",
+        "Major Hernandez.",
+        "Major Moreno.",
+        "Major Ramirez."
+    ]
+},
+
+{
+    q: "When was JROTC established?",
+    a: "1916.",
+    options: [
+        "1916.",
+        "1917.",
+        "1918.",
+        "1919."
+    ]
+},
+
+{
+    q: "What act established JROTC?",
+    a: "The National Defense Act of 1916.",
+    options: [
+        "The National Defense Act of 1916.",
+        "The National Security Act of 1947.",
+        "The Selective Service Act of 1917.",
+        "The Defense Authorization Act of 1958."
+    ]
+},
+
+{
+    q: "What do the 13 stripes on the U.S. flag represent?",
+    a: "The original 13 colonies.",
+    options: [
+        "The original 13 colonies.",
+        "The first 13 states admitted.",
+        "The original 13 military divisions.",
+        "The first 13 presidents of the country."
+    ]
+},
+
+{
+    q: "What does JROTC stand for?",
+    a: "Junior Reserve Officer Training Corps.",
+    options: [
+        "Junior Reserve Officer Training Corps.",
+        "Junior Regional Officer Training Command.",
+        "Joint Reserve Operations Training Corps.",
+        "Junior Reserve Organization Training Center."
+    ]
+},
+
+{
+    q: "What does LDRSHIP stand for?",
+    a: "Loyalty, Duty, Respect, Selfless Service, Honor, Integrity, Personal Courage.",
+    options: [
+        "Loyalty, Duty, Respect, Selfless Service, Honor, Integrity, Personal Courage.",
+        "Leadership, Discipline, Responsibility, Service, Honor, Integrity, Pride.",
+        "Loyalty, Dedication, Readiness, Strength, Honesty, Initiative, Performance.",
+        "Leadership, Duty, Respect, Service, Humility, Integrity, Patriotism."
+    ]
+},
+
+{
+    q: "What is the vision of JROTC?",
+    a: "JROTC will provide a quality citizenship, character, and leadership development program, while fostering partnerships with communities and educational institutions.",
+    options: [
+        "JROTC will provide a quality citizenship, character, and leadership development program, while fostering partnerships with communities and educational institutions.",
+        "JROTC will provide military career preparation, physical training, and advanced technical instruction, while building partnerships with military organizations.",
+        "JROTC will provide academic tutoring, athletic development, and career preparation, while supporting partnerships with schools and local businesses.",
+        "JROTC will provide citizenship education, military readiness, and community service opportunities, while developing partnerships with government agencies."
+    ]
+},
+
+{
+    q: "Who is the 8th Brigade Command Sergeant Major?",
+    a: "Command Sergeant Major Keneti Pauulu.",
+    options: [
+        "Command Sergeant Major Keneti Pauulu.",
+        "Command Sergeant Major Darrell E. Walls.",
+        "Command Sergeant Major Pablo Reyes.",
+        "Command Sergeant Major George J. Plys."
+    ]
+},
+
+{
+    q: "Who is the 8th Brigade Commander?",
+    a: "Colonel George J. Plys.",
+    options: [
+        "Colonel George J. Plys.",
+        "Brigadier General Sean Crockett.",
+        "Colonel Keneti Pauulu.",
+        "Colonel Darrell E. Walls."
+    ]
+},
+
+{
+    q: "Who is the U.S. Army Cadet Command Command Sergeant Major?",
+    a: "Command Sergeant Major Darrell E. Walls.",
+    options: [
+        "Command Sergeant Major Darrell E. Walls.",
+        "Command Sergeant Major Keneti Pauulu.",
+        "Command Sergeant Major Pablo Reyes.",
+        "Command Sergeant Major George J. Plys."
+    ]
+},
+
+{
+    q: "Who is the U.S. Army Cadet Command Commander?",
+    a: "Brigadier General Sean Crockett.",
+    options: [
+        "Brigadier General Sean Crockett.",
+        "Colonel George J. Plys.",
+        "Brigadier General Keneti Pauulu.",
+        "Major General Darrell E. Walls."
+    ]
+},
+
+{
+    q: "Who is the Secretary of Defense?",
+    a: "Honorable Pete Hegseth.",
+    options: [
+        "Honorable Pete Hegseth.",
+        "Honorable JD Vance.",
+        "Honorable Donald J. Trump.",
+        "Honorable Gavin Newsom."
+    ]
+},
+
+{
+    q: "Who is the Vice President of the United States?",
+    a: "Honorable JD Vance.",
+    options: [
+        "Honorable JD Vance.",
+        "Honorable Pete Hegseth.",
+        "Honorable Donald J. Trump.",
+        "Honorable Gavin Newsom."
+    ]
+},
+
+{
+    q: "Who is the President of the United States?",
+    a: "Honorable Donald J. Trump.",
+    options: [
+        "Honorable Donald J. Trump.",
+        "Honorable JD Vance.",
+        "Honorable Pete Hegseth.",
+        "Honorable Gavin Newsom."
+    ]
+},
+
+{
+    q: "When did JROTC officially start?",
+    a: "1916.",
+    options: [
+        "1916.",
+        "1917.",
+        "1918.",
+        "1919."
+    ]
+},
+
+{
+    q: "How many years has the battalion earned Honor Unit with Distinction?",
+    a: "9 years.",
+    options: [
+        "9 years.",
+        "7 years.",
+        "8 years.",
+        "10 years."
+    ]
+},
+
+{
+    q: "What does the star mean on the uniform?",
+    a: "Honor Unit with Distinction.",
+    options: [
+        "Honor Unit with Distinction.",
+        "Outstanding Cadet Achievement.",
+        "Battalion Leadership Recognition.",
+        "Distinguished Academic Achievement."
+    ]
+}
+
+];
+
+let currentQuestions = [];
+let currentIndex = 0;
+let score = 0;
+let selectedSection = "";
+let answered = false;
+
+function shuffle(array) {
+    const copy = [...array];
+
+    for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+    }
+
+    return copy;
+}
+
+function startQuiz(section) {
+    selectedSection = section;
+
+    const sourceQuestions = section === "cadet"
+        ? cadetQuestions
+        : uniformQuestions;
+
+    currentQuestions = sourceQuestions.map(question => ({
+        ...question,
+        options: question.options ? shuffle(question.options) : []
+    }));
+
+    currentIndex = 0;
+    score = 0;
+    answered = false;
+
+    document.getElementById("home").style.display = "none";
+    document.getElementById("result").style.display = "none";
+    document.getElementById("quiz").style.display = "block";
+
+    document.getElementById("quizTitle").textContent =
+        section === "cadet"
+            ? "Cadet of the Month"
+            : "Uniform Inspection";
+
+    showQuestion();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function createStructuredContent(value, type) {
+    const container = document.createElement("div");
+    container.className = "answer-content";
+
+    const lines = value.split("\n").filter(line => line.trim() !== "");
+
+    if (type === "staff") {
+        const list = document.createElement("div");
+        list.className = "staff-list";
+
+        lines.forEach(line => {
+            const row = document.createElement("div");
+            row.className = "staff-row";
+
+            const parts = line.split(":");
+            const role = document.createElement("span");
+            const name = document.createElement("span");
+
+            role.className = "staff-role";
+            name.className = "staff-name";
+
+            role.textContent = parts[0] ? parts[0].trim() : line;
+            name.textContent = parts.slice(1).join(":").trim();
+
+            row.appendChild(role);
+            row.appendChild(name);
+            list.appendChild(row);
+        });
+
+        container.appendChild(list);
+    } else if (type === "ranks") {
+        const list = document.createElement("div");
+        list.className = "rank-list";
+
+        lines.forEach((line, index) => {
+            const row = document.createElement("div");
+            row.className = "rank-row";
+
+            const number = document.createElement("span");
+            number.className = "rank-number";
+            number.textContent = `${index + 1}.`;
+
+            const rank = document.createElement("span");
+            rank.textContent = line;
+
+            row.appendChild(number);
+            row.appendChild(rank);
+            list.appendChild(row);
+        });
+
+        container.appendChild(list);
+    } else {
+        container.textContent = value;
+    }
+
+    return container;
+}
+
+function showQuestion() {
+    answered = false;
+
+    const question = currentQuestions[currentIndex];
+    const total = currentQuestions.length;
+
+    document.getElementById("counter").textContent =
+        `Question ${currentIndex + 1} of ${total}`;
+
+    document.getElementById("progress").style.width =
+        `${(currentIndex / total) * 100}%`;
+
+    document.getElementById("questionText").textContent = question.q;
+
+    const choices = document.getElementById("answerChoices");
+    const feedback = document.getElementById("feedback");
+
+    choices.innerHTML = "";
+    feedback.className = "feedback";
+    feedback.innerHTML = "";
+
+    document.getElementById("nextButton").disabled = true;
+    document.getElementById("nextButton").textContent =
+        currentIndex === total - 1 ? "See Results" : "Next";
+
+    if (question.type === "creed") {
+        showCreedQuestion(choices);
+        return;
+    }
+
+    question.options.forEach((option, index) => {
+        const button = document.createElement("button");
+        button.className = "answer";
+
+        const letter = document.createElement("span");
+        letter.className = "letter";
+        letter.textContent = String.fromCharCode(65 + index);
+
+        button.appendChild(letter);
+        button.appendChild(createStructuredContent(option, question.type));
+
+        button.addEventListener("click", () => selectAnswer(button, option));
+
+        choices.appendChild(button);
+    });
+}
+
+function showCreedQuestion(choices) {
+    const box = document.createElement("div");
+    box.className = "oral-box";
+
+    const heading = document.createElement("h3");
+    heading.textContent = "THE CADET CREED";
+
+    const creed = document.createElement("div");
+    creed.textContent = cadetCreed;
+
+    box.appendChild(heading);
+    box.appendChild(creed);
+    choices.appendChild(box);
+
+    const confirm = document.createElement("label");
+    confirm.className = "oral-confirm";
+
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+
+    const text = document.createElement("span");
+    text.textContent = "I read it.";
+
+    checkbox.addEventListener("change", () => {
+        if (checkbox.checked && !answered) {
+            answered = true;
+            score++;
+
+            document.getElementById("feedback").className = "feedback good";
+            document.getElementById("feedback").textContent =
+                "Response recorded: I read it.";
+
+            document.getElementById("nextButton").disabled = false;
+        } else if (!checkbox.checked && answered) {
+            answered = false;
+            score--;
+
+            document.getElementById("feedback").className = "feedback";
+            document.getElementById("feedback").textContent = "";
+
+            document.getElementById("nextButton").disabled = true;
+        }
+    });
+
+    confirm.appendChild(checkbox);
+    confirm.appendChild(text);
+    choices.appendChild(confirm);
+}
+
+function selectAnswer(button, selected) {
+    if (answered) return;
+
+    answered = true;
+
+    const question = currentQuestions[currentIndex];
+    const correct = selected === question.a;
+
+    const allButtons = document.querySelectorAll(".answer");
+
+    allButtons.forEach(answerButton => {
+        answerButton.disabled = true;
+
+        const content = answerButton.querySelector(".answer-content");
+        const answerText = content.textContent;
+
+        if (answerText.replace(/\s+/g, " ").trim() ===
+            question.a.replace(/\s+/g, " ").trim()) {
+            answerButton.classList.add("correct");
+        }
+    });
+
+    const feedback = document.getElementById("feedback");
+    feedback.className = correct ? "feedback good" : "feedback bad";
+
+    const message = document.createElement("div");
+    message.textContent = correct
+        ? "Correct!"
+        : "Not quite. The correct answer is:";
+
+    feedback.appendChild(message);
+
+    if (!correct) {
+        const correctAnswer = createStructuredContent(question.a, question.type);
+        correctAnswer.classList.add("feedback-answer");
+        feedback.appendChild(correctAnswer);
+    }
+
+    if (correct) {
+        score++;
+    }
+
+    document.getElementById("nextButton").disabled = false;
+}
+
+function nextQuestion() {
+    if (!answered) return;
+
+    currentIndex++;
+
+    if (currentIndex >= currentQuestions.length) {
+        showResults();
+    } else {
+        showQuestion();
+    }
+}
+
+function showResults() {
+    document.getElementById("quiz").style.display = "none";
+    document.getElementById("result").style.display = "block";
+
+    const total = currentQuestions.length;
+    const percentage = Math.round((score / total) * 100);
+
+    document.getElementById("finalScore").textContent =
+        percentage + "%";
+
+    document.getElementById("scoreDetails").textContent =
+        `${score} out of ${total} completed correctly`;
+
+    let message = "";
+
+    if (percentage === 100) {
+        message = "Excellent work! You completed every question correctly.";
+    } else if (percentage >= 80) {
+        message = "Good work! Review the questions you missed and try again.";
+    } else if (percentage >= 60) {
+        message = "You're making progress. Keep studying and practice again.";
+    } else {
+        message = "Keep practicing. Memorize the answers and try the quiz again.";
+    }
+
+    document.getElementById("resultMessage").textContent = message;
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function restartQuiz() {
+    startQuiz(selectedSection);
+}
+
+function goHome() {
+    document.getElementById("quiz").style.display = "none";
+    document.getElementById("result").style.display = "none";
+    document.getElementById("home").style.display = "block";
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
+}
+</script>
+
+</body>
+</html>
